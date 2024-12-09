@@ -24,6 +24,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
+    RecyclerView recyclerView;
+    List<DataClass> dataList;
+    DatabaseReference databaseReference;
+    ValueEventListener eventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fab = findViewById(R.id.fab);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setCancelable(false);
+        builder.setView(R.layout.progress_layout);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dataList = new ArrayList<>();
+        MyAdapter adapter = new MyAdapter(MainActivity.this, dataList);
+        recyclerView.setAdapter(adapter);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+        dialog.show();
+        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
+                for (DataSnapshot itemSnapshot: snapshot.getChildren()){
+                    DataClass dataClass = itemSnapshot.getValue(DataClass.class);
+                    dataList.add(dataClass);
+                }
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                dialog.dismiss();
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
