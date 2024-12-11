@@ -18,12 +18,12 @@
         app:searchHintIcon="@null"
         app:queryHint="Search..."
         android:focusable="false"
-        app:closeIcon="@drawable/close"
+        android:layout_alignParentTop="true"
         app:searchIcon="@drawable/search"
         android:background="@drawable/blue_border"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
@@ -40,5 +40,18 @@
         android:backgroundTint="@color/blue"
         app:tint = "@color/white"
         android:src="@drawable/ic_baseline_add_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="40dp"
+        android:layout_marginStart="315dp"
+        android:backgroundTint="@color/blue"
+        android:src="@drawable/baseline_logout_24"
+        app:tint="@color/white" />
 
 </RelativeLayout>

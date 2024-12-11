@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -67,6 +68,9 @@ public class UpdateActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             Glide.with(UpdateActivity.this).load(bundle.getString("Image")).into(updateImage);
@@ -76,7 +80,10 @@ public class UpdateActivity extends AppCompatActivity {
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
         }
-        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials").child(key);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials")
+                .child(userId)  // Use user-specific data path
+                .child(key);
 
         updateImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,18 +129,29 @@ public class UpdateActivity extends AppCompatActivity {
         });
     }
     public void updateData(){
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         title = updateTitle.getText().toString().trim();
         desc = updateDesc.getText().toString().trim();
         lang = updateLang.getText().toString();
 
         DataClass dataClass = new DataClass(title, desc, lang, imageUrl);
 
+        databaseReference = FirebaseDatabase.getInstance()
+                .getReference("Android Tutorials")
+                .child(userId) // Store data under the user's node
+                .child(key);    // Unique identifier for this tutorial
+
+        // Save the updated data
         databaseReference.setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
+                    // Delete the old image from Firebase Storage
                     StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
                     reference.delete();
+
                     Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="70dp"
     tools:context=".DetailActivity">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/detailTitle"
         android:text="Title"
+        android:textStyle="bold"
         android:layout_marginTop="14dp"
         android:textSize="24sp"
         android:layout_gravity="center"
@@ -80,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/deleteButton"
-                android:src="@drawable/delete"
+                android:src="@drawable/baseline_delete_24"
                 app:fab_showShadow="true"
                 app:fab_colorNormal="@color/red"
                 app:fab_size="mini"/>

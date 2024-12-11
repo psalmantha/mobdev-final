@@ -16,6 +16,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,11 +30,11 @@ public class DetailActivity extends AppCompatActivity {
     FloatingActionButton deleteButton, editButton;
     String key = "";
     String imageUrl = "";
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_detail);
 
         detailDesc = findViewById(R.id.detailDesc);
@@ -42,6 +44,15 @@ public class DetailActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.deleteButton);
         editButton = findViewById(R.id.editButton);
 
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            userId = currentUser.getUid(); // Get UID of the logged-in user
+        } else {
+            // Handle the case where the user is not logged in
+            Toast.makeText(this, "Please log in to continue.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
@@ -56,7 +67,7 @@ public class DetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Android Tutorials").child(userId);
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
                 storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -78,7 +89,8 @@ public class DetailActivity extends AppCompatActivity {
                         .putExtra("Description", detailDesc.getText().toString())
                         .putExtra("Language", detailLang.getText().toString())
                         .putExtra("Image", imageUrl)
-                        .putExtra("Key", key);
+                        .putExtra("Key", key)
+                        .putExtra("UserId", userId);
                 startActivity(intent);
             }
         });
