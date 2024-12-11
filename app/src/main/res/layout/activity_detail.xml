@@ -17,7 +17,7 @@
         android:textSize="24sp"
         android:layout_gravity="center"
         android:layout_marginBottom="12dp"
-        android:textColor="@color/lavender"/>
+        android:textColor="@color/blue"/>
 
     <ImageView
         android:layout_width="400dp"
@@ -37,7 +37,7 @@
         android:layout_gravity="center"
         android:id="@+id/detailLang"
         android:textSize="18sp"
-        android:textColor="@color/lavender"/>
+        android:textColor="@color/blue"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -48,6 +48,6 @@
         android:layout_gravity="center"
         android:id="@+id/detailDesc"
         android:textSize="18sp"
-        android:textColor="@color/lavender"/>
+        android:textColor="@color/blue"/>
 
 </LinearLayout>

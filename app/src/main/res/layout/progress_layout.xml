@@ -9,7 +9,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:indeterminateTint="@color/lavender"/>
+        android:indeterminateTint="@color/blue"/>
 
     <TextView
         android:layout_width="0dp"
@@ -17,7 +17,7 @@
         android:layout_weight="4"
         android:text="Loading..."
         android:textSize="18sp"
-        android:textColor="@color/lavender"
+        android:textColor="@color/blue"
         android:gravity="start|center_vertical"/>
 
 </LinearLayout>
