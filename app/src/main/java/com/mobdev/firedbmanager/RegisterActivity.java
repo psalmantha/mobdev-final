@@ -29,11 +29,11 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    TextInputEditText editTextemail, editTextpassword;
+    TextInputEditText editTextemail, editTextpassword, reenterPass;
     Button register_btn;
     FirebaseAuth mAuth;
     ProgressBar progress;
-    TextView textView;
+    TextView login;
 
     @Override
     public void onStart() {
@@ -57,11 +57,12 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextemail = findViewById(R.id.email);
         editTextpassword = findViewById(R.id.password);
+        reenterPass = findViewById(R.id.repassword);
         progress = findViewById(R.id.progress);
         register_btn = findViewById(R.id.register_btn);
-        textView = findViewById(R.id.loginNow);
+        login = findViewById(R.id.loginNow);
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -74,9 +75,10 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progress.setVisibility(View.VISIBLE);
-                String email, password;
+                String email, password, reenter;
                 email = String.valueOf(editTextemail.getText());
                 password = String.valueOf(editTextpassword.getText());
+                reenter = String.valueOf(reenterPass.getText());
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(RegisterActivity.this, "Enter Email", Toast.LENGTH_SHORT).show();
@@ -85,6 +87,18 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(RegisterActivity.this, "Enter Password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(reenter)) {
+                    progress.setVisibility(View.GONE);
+                    Toast.makeText(RegisterActivity.this, "Re-enter Password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!password.equals(reenter)) { // Correct comparison for strings
+                    progress.setVisibility(View.GONE);
+                    Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

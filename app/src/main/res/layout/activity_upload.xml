@@ -70,7 +70,7 @@
                 android:background="@drawable/blue_border"
                 android:layout_marginTop="20dp"
                 android:padding="16dp"
-                android:hint="Enter language"
+                android:hint="Other notes"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/blue"/>
 
