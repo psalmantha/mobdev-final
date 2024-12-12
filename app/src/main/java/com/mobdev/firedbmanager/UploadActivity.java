@@ -115,11 +115,11 @@ public class UploadActivity extends AppCompatActivity {
         String lang = uploadLang.getText().toString();
         DataClass dataClass = new DataClass(title, desc, lang, imageURL);
 
-        String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        String key = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
         FirebaseDatabase.getInstance()
                 .getReference("Android Tutorials")
                 .child(userId) // Save under the current user's node
-                .child(currentDate) // Unique entry key
+                .child(key) // Unique entry key
                 .setValue(dataClass)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
