@@ -166,13 +166,12 @@ public class UpdateActivity extends AppCompatActivity {
         DataClass dataClass = new DataClass(title, desc, lang, imageUrl);
 
         // Recreate the database reference
-        databaseReference = FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance()
                 .getReference("Android Tutorials")
                 .child(userID)
-                .child(key);
-
-        // Update the data
-        databaseReference.setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .child(key)
+                .setValue(dataClass)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 dialog.dismiss();
